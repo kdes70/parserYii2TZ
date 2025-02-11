@@ -1,26 +1,41 @@
 services:
   app:
-    image: yiisoftware/yii2-php:8.3-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - USER_ID=${UID:-1000}
+        - GROUP_ID=${GID:-1000}
     container_name: yii2-app
+    environment:
+      - APACHE_RUN_USER=hostuser
+      - APACHE_RUN_GROUP=hostgroup
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      - ./app:/var/www/html:delegated
+      - ./:/var/www/html:delegated
     ports:
       - "8888:80"
     working_dir: /var/www/html
     depends_on:
-      - db
+      db:
+        condition: service_healthy  # Ждем, пока база данных полностью поднимется
 
   db:
-    image: mysql:8.0
-    container_name: yii2-db
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: yii2_test
-      MYSQL_USER: yii2_user
-      MYSQL_PASSWORD: yii2_password
+    image: mariadb:10.11
+    volumes:
+      - mariadb:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "33061:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: "yii2_user"
+      MYSQL_PASSWORD: "yii2_user"
+      MYSQL_DATABASE: "yii2_test"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 5
+      start_period: 10s  # Подождать перед первой проверкой
 
 volumes:
-  mysql_data:
+  mariadb:
