@@ -52,16 +52,23 @@ docker compose down   # Остановка контейнеров
 docker compose exec app bash
 ```
 
-### Запустить парсер
+### Запустить парсер с помощью Google Sheets API
 ```sh
 docker-compose exec app ./yii parse
 ```
+
+### Запустить парсер по указанному пути
+```sh
+docker-compose exec app ./yii parse "runtime/import/Dev Test 2022 MASTER BUDGET.xlsx" 
+
+```
+> **_NOTE:_**  Если возникнит ошибка по пямяти то можно применить опцию --memory-limit=512M (но это рекомендуется делать только для тестов)
 
 ### Очистка кеша
 ```sh
 docker compose exec app php yii cache/flush-all
 ```
-
+№
 ### Запуск тестов
 ```sh
 docker compose exec app vendor/bin/codecept run
@@ -70,6 +77,11 @@ docker compose exec app vendor/bin/codecept run
 ### Логи контейнеров
 ```sh
 docker compose logs -f
+```
+
+### Логи парсера
+```sh
+docker compose exec app tail -f runtime/logs/app.log
 ```
 
 ## 🔧 Полезные настройки

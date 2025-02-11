@@ -29,7 +29,6 @@ class m250211_123606_create_budgets_table extends Migration
             '{{%products}}',
             'id',
             'CASCADE',
-            'RESTRICT'
         );
 
         // Уникальный индекс для бюджета: (product_id, month, year)
@@ -46,6 +45,7 @@ class m250211_123606_create_budgets_table extends Migration
      */
     public function safeDown(): void
     {
+        $this->dropForeignKey('fk_budgets_product', '{{%budgets}}');
         $this->dropTable('{{%budgets}}');
     }
 }

@@ -1,10 +1,9 @@
 <?php
 
-namespace models;
+namespace app\models;
 
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-
 
 /**
  * Модель для таблицы budgets.

@@ -1,8 +1,7 @@
 <?php
 
-namespace models;
+namespace app\models;
 
-use JsonException;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
@@ -33,11 +32,11 @@ class Category extends ActiveRecord
 
     /**
      * Находит или создает категорию.
+     * TODO: Вынести в репозиторий, но мне лень :) KISS
      *
      * @param string|null $categoryName
      * @return Category
      * @throws Exception
-     * @throws JsonException
      */
     public static function findOrCreateCategory(?string $categoryName): Category
     {
@@ -47,7 +46,7 @@ class Category extends ActiveRecord
             $category = new static();
             $category->name = $categoryName;
             if (!$category->save()) {
-                Yii::error("Ошибка сохранения категории '{$categoryName}': " . json_encode($category->errors, JSON_THROW_ON_ERROR), __METHOD__);
+                Yii::error("Ошибка сохранения категории '{$categoryName}': " . json_encode($category->errors), __METHOD__);
             }
         }
         return $category;

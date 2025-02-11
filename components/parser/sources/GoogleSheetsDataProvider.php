@@ -10,18 +10,19 @@ use RuntimeException;
 
 /**
  * Провайдер данных из Google Sheets API.
+ * TODO: (Не забудьте получить credentials.json)
  */
 class GoogleSheetsDataProvider implements DataProviderInterface
 {
     private string $spreadsheetId;
     private string $range;
+    private string|null $credentials;  // __DIR__ . 'credentials.json';
 
     public function __construct(string $spreadsheetId, string $range)
     {
         $this->spreadsheetId = $spreadsheetId;
         $this->range = $range;
-
-        $this->credentials = null; // __DIR__ . 'credentials.json';
+        $this->credentials = null;
     }
 
     /**

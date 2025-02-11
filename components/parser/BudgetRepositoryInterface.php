@@ -7,9 +7,10 @@ namespace app\components\parser;
 interface BudgetRepositoryInterface
 {
     /**
-     * Сохраняет пакет (чанк) записей бюджета.
+     * Сохраняет пакет (чанк) записей бюджета с upsert-логикой.
      *
      * @param array $records Массив записей вида: [product_id, month, year, amount]
+     * @return array Вернёт массив с ключами 'inserted' и 'updated'
      */
-    public function saveBatch(array $records): void;
+    public function upsertBatch(array $records): array;
 }
